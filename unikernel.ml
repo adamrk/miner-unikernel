@@ -3,6 +3,7 @@
 *)
 
 open Lwt.Infix
+
 let target_ip = Ipaddr.V4.of_string_exn "10.0.0.1"
 
 module Main (S: Mirage_types_lwt.STACKV4) = struct
@@ -43,5 +44,7 @@ module Main (S: Mirage_types_lwt.STACKV4) = struct
 
     S.TCPV4.close flow);
     *)
+    Logs.info (fun f -> f "logging something %s" Findnonce.foo);
+    Logs.info (fun f -> f "logging the start key %s" (Key_gen.start_inx ()));
     S.listen s
 end

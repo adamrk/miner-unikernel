@@ -8,3 +8,4 @@ myocamlbuild.ml
 main.ml
 .mirage.config
 *.byte
+*.swp

@@ -1,6 +1,8 @@
 let header_size = 76 (* block header is 76 bytes without nonnce *)
 let nonce_size = 4 (* nonce size is 4 bytes *)
 
+let foo = "hello from nonce file"
+
 let rev_string_pairs (s : string) : string =
   let rec help a b = match String.length b with
     | 0 -> a
@@ -82,8 +84,7 @@ let copy_nonce bytestring (nonce : Big_int.big_int ref) l : unit =
     let nonce_bs = big_int_to_array !nonce nonce_size in
     for i = 0 to nonce_size - 1 do
       bytestring.{l + i} <- nonce_bs.(i)
-    done;
-    Core.Std.printf "copied nonce\n"
+    done
 
 let find_nonce (s : string) (diff : Big_int.big_int) =
   let bytestring = make_bytestring s nonce_size in
@@ -92,11 +93,10 @@ let find_nonce (s : string) (diff : Big_int.big_int) =
   copy_nonce bytestring nonce l;
   while not (good_enough_byte bytestring diff) do
     nonce := Big_int.succ_big_int !nonce;
-    Core.Std.printf "%s\n" (Big_int.string_of_big_int !nonce);
-    flush stdout;
     copy_nonce bytestring nonce l
   done;
   big_int_to_array !nonce nonce_size
+
 
 let s1 = "0100000081cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122bc7f5d74df2b9441a42a14695"
 let s2 = "0100000081cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122bc7f5d74df2b9441a"
@@ -111,3 +111,4 @@ let result = find_nonce s2 difficulty3
 (* let () =
   Core.Std.printf "%s\n" (double_sha s1);
   Core.Std.printf "%b\n" (good_enough (double_sha s1) difficulty2); *)
+
