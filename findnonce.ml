@@ -86,17 +86,23 @@ let copy_nonce bytestring (nonce : Big_int.big_int ref) l : unit =
       bytestring.{l + i} <- nonce_bs.(i)
     done
 
-let find_nonce (s : string) (diff : Big_int.big_int) =
+let find_nonce (s : string) 
+               (diff : Big_int.big_int) 
+               (range_start : Big_int.big_int)
+               (range_end : Big_int.big_int)
+               : int array option =
   let bytestring = make_bytestring s nonce_size in
   let l = String.length s / 2 in
-  let nonce = ref (Big_int.big_int_of_int 0) in
+  let nonce = ref range_start in
   copy_nonce bytestring nonce l;
-  while not (good_enough_byte bytestring diff) do
+  while not (good_enough_byte bytestring diff) 
+    && Big_int.lt_big_int !nonce range_end do
     nonce := Big_int.succ_big_int !nonce;
     copy_nonce bytestring nonce l
   done;
-  big_int_to_array !nonce nonce_size
-
+  if (good_enough_byte bytestring diff) 
+    then Some (big_int_to_array !nonce nonce_size)
+    else None
 
 let s1 = "0100000081cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122bc7f5d74df2b9441a42a14695"
 let s2 = "0100000081cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122bc7f5d74df2b9441a"

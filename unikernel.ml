@@ -45,6 +45,7 @@ module Main (S: Mirage_types_lwt.STACKV4) = struct
     S.TCPV4.close flow);
     *)
     Logs.info (fun f -> f "logging something %s" Findnonce.foo);
-    Logs.info (fun f -> f "logging the start key %s" (Key_gen.start_inx ()));
+    Logs.info (fun f -> f "logging the range begin %s" (Key_gen.start_string ()));
+    Logs.info (fun f -> f "logging the range end %s" (Key_gen.end_string ()));
     S.listen s
 end
