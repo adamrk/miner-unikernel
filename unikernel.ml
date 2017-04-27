@@ -12,8 +12,8 @@ module Main (S: Mirage_types_lwt.STACKV4) = struct
   let start s =
     let t = S.tcpv4 s in
     let port = Key_gen.port () in
-    let range_start = Findnonce.hex_string_to_big_int (Key_gen.start_string ()) in
-    let range_end = Findnonce.hex_string_to_big_int (Key_gen.end_string ()) in
+    let range_start = Findnonce.hex_string_to_int64 (Key_gen.start_string ()) in
+    let range_end = Findnonce.hex_string_to_int64 (Key_gen.end_string ()) in
 
     S.listen_tcpv4 s ~port (fun flow ->
       let dst, dst_port = S.TCPV4.dst flow in

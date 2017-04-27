@@ -20,7 +20,7 @@ let stack = generic_stackv4 default_network
 (* let tracing = mprof_trace ~size:1000000 ()
 *)
 
-let packages = [package "sha"; package "num"]
+let packages = [package "sha"]
 
 let () =
   register "example" ~packages (*~tracing*) [
