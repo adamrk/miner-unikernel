@@ -17,12 +17,8 @@ let main = foreign ~keys:[Key.abstract port; Key.abstract start_string; Key.abst
   "Unikernel.Main" (stackv4 @-> job)
 let stack = generic_stackv4 default_network
 
-(* let tracing = mprof_trace ~size:1000000 ()
-*)
-
-let packages = [package "sha"]
 
 let () =
-  register "example" ~packages (*~tracing*) [
+  register "example" [
     main $ stack
   ]
